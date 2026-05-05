@@ -1,7 +1,7 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
 import {flags} from '../utils/flags.js'
 
-export default function GameCard({game}){
+export default function GameCards({game}){
 
 
     return(

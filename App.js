@@ -1,40 +1,37 @@
 import { StyleSheet, Text, View, Image, ImageBackground, SectionList } from 'react-native';
-import GameCard from './components/GameCard';
 import dados from './assets/dados.json'
+import GameCards from './components/GameCards';
+
 
 export default function App() {
 
-  const jogos = dados.jogos;
+  const jogos = dados.jogos
 
-  const agruparPorData =(jogos) => {
-    
+  const agruparPorData = (jogos) => {
     return jogos.reduce((acc, jogo) => {
 
-      const data = jogo.data_brasilia;
+      const data = jogo.data_brasilia
 
       if (!acc[data]) {
-        acc[data] = [];
+        acc[data] = []
       }
 
-      acc[data].push(jogo);
+      acc[data].push(jogo)
 
-      return acc;
+      return acc
 
-    }, {});
-
+    }, {})
   }
 
-  const jogosAgrupados = agruparPorData(jogos);
-  
-  const jogosTratados = Objectkeys(jogosAgrupados).map(data => {
+  const jogosAgrupados = agruparPorData(jogos)
+
+  const jogosTratados = Object.keys(jogosAgrupados).map(data => {
     return {
       title: data,
-      jogos: jogosAgrupados[data]
+      data: jogosAgrupados[data]
     }
-  });
+  })
 
-  console.log(jogosTratados)
-  
 
   return (
     <ImageBackground style={styles.container}
@@ -46,25 +43,25 @@ export default function App() {
       <Text style={styles.title}>CALENDÁRIO</Text>
 
       <SectionList
-      sections={jogosTratados}
-      keyExtractor={(item, index) => item + index}
-      renderItem={() => null}
-      renderSectionHeader={ ({section}) => (
-        <View style = {styles.card}>
-        <Text style={styles.data}>{section.title}</Text>
+        sections={jogosTratados}
+        keyExtractor={(item, index) => item + index}
+        renderItem={() => null}
+        renderSectionHeader={({ section }) => (
+          <View style={styles.card} >
 
-          
-          {
-            section.data.map[jogo => (
-              <GameCard key={jogo.id} game= {jogo} />
-            )]
-          }
+            <Text style={styles.data}> {section.title} </Text>
+            {
+              section.data.map((jogo) => (
+                <GameCards key={jogo.id} game={jogo} />
+              ))
+            }
 
-        </View>
-      
 
+
+          </View>
         )
-    }
+        }
+
 
       />
 
@@ -103,5 +100,12 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 10
-  }
+  },
+
+  jogo: {
+    marginBottom: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#1e2d3d',
+    paddingBottom: 15
+  },
 });
