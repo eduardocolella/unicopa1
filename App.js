@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Image, ImageBackground, SectionList } from 'rea
 import dados from './assets/dados.json'
 import GameCards from './components/GameCards';
 import DiaCard from './components/DiaCard';
-import { formatarData } from './utils/DateFormat';
+import formatarData from './utils/DateFormat';
 
 
 export default function App() {
@@ -25,17 +25,16 @@ export default function App() {
     }, {})
   }
 
-  const jogosAgrupados = agruparPorData(jogos)
+  const jogosAgrupados = agruparPorData(jogos);
 
   const jogosTratados = Object.keys(jogosAgrupados).map(data => {
     return {
       title: data,
       data: jogosAgrupados[data]
     }
-  })
+  });
 
-
-  return (
+return (
     <ImageBackground style={styles.container}
       source={require('./assets/bg-overlay.png')}>
       <Image style={styles.logo}

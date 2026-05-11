@@ -1,12 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import GameCard from './GameCard';
+import GameCard from './GameCards';
+import { formatarData } from '../utils/DateFormat';
 
 export default function DiaCard({ data, jogos }) {
   return (
     <View style={styles.card}>
       <Text style={styles.data}>
-        {data}
+        {formatarData(data)}
       </Text>
       {
         jogos.map((jogo) => (
