@@ -1,6 +1,8 @@
 import { StyleSheet, Text, View, Image, ImageBackground, SectionList } from 'react-native';
 import dados from './assets/dados.json'
 import GameCards from './components/GameCards';
+import DiaCard from './components/DiaCard';
+import { formatarData } from './utils/DateFormat';
 
 
 export default function App() {
@@ -44,25 +46,12 @@ export default function App() {
 
       <SectionList
         sections={jogosTratados}
-        keyExtractor={(item, index) => item + index}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={() => null}
         renderSectionHeader={({ section }) => (
-          <View style={styles.card} >
 
-            <Text style={styles.data}> {section.title} </Text>
-            {
-              section.data.map((jogo) => (
-                <GameCards key={jogo.id} game={jogo} />
-              ))
-            }
-
-
-
-          </View>
-        )
-        }
-
-
+          <DiaCard data={section.title} jogos={section.data} />
+        )}
       />
 
     </ImageBackground>
