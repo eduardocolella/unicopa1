@@ -3,11 +3,29 @@ import dados from './assets/dados.json'
 import GameCards from './components/GameCards';
 import DiaCard from './components/DiaCard';
 import formatarData from './utils/DateFormat';
+import { useEffect, useState } from 'react';
+import { supabase } from './utils/supabase';
 
 
 export default function App() {
 
-  const jogos = dados.jogos
+  const [jogos, setJogos] = useState([])
+
+  useEffect(() => {
+    async function carregarJogos(){
+
+      const { data, error } = await supabase
+      .from('jogos')
+      .select('*')
+      .order('data_brasilia', {ascending: false})
+
+      if(!error){
+        setJogos(data)
+      }
+    }
+
+    carregarJogos()
+  })
 
   const agruparPorData = (jogos) => {
     return jogos.reduce((acc, jogo) => {
