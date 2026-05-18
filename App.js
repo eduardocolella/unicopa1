@@ -6,6 +6,11 @@ import formatarData from './utils/DateFormat';
 import { useEffect, useState } from 'react';
 import { supabase } from './utils/supabase';
 
+<DiaCard
+  data={section.title}
+  jogos={section.data}
+  onToggleFavorito={alternarFavorito}
+/>
 
 export default function App() {
 
@@ -145,3 +150,31 @@ const styles = StyleSheet.create({
   fontWeight: '600',
 },
 });
+const alternarFavorito = async (id, favoritoAtual) => {
+
+  const novoValor = !favoritoAtual;
+
+  const { error } = await supabase
+    .from('jogos')
+    .update({
+      favorito: novoValor
+    })
+    .eq('id', id);
+
+  if (!error) {
+
+    const jogosAtualizados = jogos.map(jogo => {
+
+      if (jogo.id === id) {
+        return {
+          ...jogo,
+          favorito: novoValor
+        }
+      }
+
+      return jogo;
+    });
+
+    setJogos(jogosAtualizados);
+  }
+}; 

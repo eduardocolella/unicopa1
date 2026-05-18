@@ -1,6 +1,6 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { flags } from '../utils/flags.js';
-
+import { TouchableOpacity } from 'react-native';
 export default function GameCards({ game }) {
 
   const isBrazilHome = game.sigla_casa === 'BRA';
@@ -24,6 +24,14 @@ export default function GameCards({ game }) {
             ]}
             source={flags[game.sigla_casa]}
           />
+
+          <TouchableOpacity
+            onPress={() => onToggleFavorito(game.id, game.favorito)}
+          >
+            <Text style={{ fontSize: 24 }}>
+              {game.favorito ? '⭐' : '☆'}
+            </Text>
+</TouchableOpacity>
 
           <Text
             style={[
