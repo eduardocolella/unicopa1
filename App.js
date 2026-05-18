@@ -12,20 +12,21 @@ export default function App() {
   const [jogos, setJogos] = useState([])
 
   useEffect(() => {
-    async function carregarJogos(){
+  async function carregarJogos() {
 
-      const { data, error } = await supabase
+    const { data, error } = await supabase
       .from('jogos')
       .select('*')
-      .order('data_brasilia', {ascending: false})
+      .order('data_brasilia', { ascending: true })
+      .order('hora_brasilia', { ascending: true })
 
-      if(!error){
-        setJogos(data)
-      }
+    if (!error) {
+      setJogos(data)
     }
+  }
 
-    carregarJogos()
-  })
+  carregarJogos()
+}, [])
 
   const agruparPorData = (jogos) => {
     return jogos.reduce((acc, jogo) => {
@@ -61,15 +62,30 @@ return (
 
       <Text style={styles.title}>CALENDÁRIO</Text>
 
-      <SectionList
-        sections={jogosTratados}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={() => null}
-        renderSectionHeader={({ section }) => (
+      {jogos.length === 0 ? (
 
-          <DiaCard data={section.title} jogos={section.data} />
-        )}
+  <View style={styles.emptyCard}>
+    <Text style={styles.emptyText}>
+      Nenhum jogo carregado
+    </Text>
+  </View>
+
+) : (
+
+  <SectionList
+    sections={jogosTratados}
+    keyExtractor={(item) => item.id.toString()}
+    renderItem={() => null}
+    renderSectionHeader={({ section }) => (
+      <DiaCard
+        data={section.title}
+        jogos={section.data}
       />
+    )}
+  />
+
+)
+}
 
     </ImageBackground>
   );
@@ -114,4 +130,18 @@ const styles = StyleSheet.create({
     borderBottomColor: '#1e2d3d',
     paddingBottom: 15
   },
+  emptyCard: {
+  marginTop: 30,
+  width: 320,
+  backgroundColor: '#0c1b2a',
+  borderRadius: 12,
+  padding: 20,
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+  emptyText: {
+  color: 'white',
+  fontSize: 18,
+  fontWeight: '600',
+},
 });
