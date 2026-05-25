@@ -3,10 +3,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import GameCard from './GameCards';
 import { formatarData } from '../utils/DateFormat';
 
-<GameCards
-  game={item}
-  onToggleFavorito={onToggleFavorito}
-/>
 
 export default function DiaCard({
   data,

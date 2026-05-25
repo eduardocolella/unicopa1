@@ -1,7 +1,52 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { flags } from '../utils/flags.js';
 import { TouchableOpacity } from 'react-native';
+import { supabase } from '../utils/supabase';
+import { useEffect, useState } from 'react';
+
+
+
 export default function GameCards({ game }) {
+
+  const [favorito, setFavorito] = useState(false);
+
+useEffect(() => {
+  verificarFavorito();
+}, []);
+
+async function verificarFavorito() {
+
+  const { data } = await supabase
+    .from('favoritos')
+    .select('*')
+    .eq('jogo_id', game.id)
+    .maybeSingle();
+
+  setFavorito(!!data);
+}
+
+async function toggleFavorito() {
+
+  if (favorito) {
+
+    await supabase
+      .from('favoritos')
+      .delete()
+      .eq('jogo_id', game.id);
+
+    setFavorito(false);
+
+  } else {
+
+    await supabase
+      .from('favoritos')
+      .insert({
+        jogo_id: game.id
+      });
+
+    setFavorito(true);
+  }
+}
 
   const isBrazilHome = game.sigla_casa === 'BRA';
   const isBrazilAway = game.sigla_fora === 'BRA';
@@ -15,7 +60,7 @@ export default function GameCards({ game }) {
 
       <View style={styles.linhaPrincipal}>
 
-        
+
         <View style={styles.time}>
           <Image
             style={[
@@ -26,12 +71,12 @@ export default function GameCards({ game }) {
           />
 
           <TouchableOpacity
-            onPress={() => onToggleFavorito(game.id, game.favorito)}
+            onPress={() => toggleFavorito(game.id, game.favorito)}
           >
             <Text style={{ fontSize: 24 }}>
-              {game.favorito ? '⭐' : '☆'}
+              {favorito ? '⭐' : '☆'}
             </Text>
-</TouchableOpacity>
+          </TouchableOpacity>
 
           <Text
             style={[
@@ -43,7 +88,7 @@ export default function GameCards({ game }) {
           </Text>
         </View>
 
-        
+
         <View style={styles.horario}>
           <Text style={styles.hora}>{game.hora_brasilia}</Text>
           <Text style={styles.subTitulo}>VS</Text>

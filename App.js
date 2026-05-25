@@ -6,12 +6,6 @@ import formatarData from './utils/DateFormat';
 import { useEffect, useState } from 'react';
 import { supabase } from './utils/supabase';
 
-<DiaCard
-  data={section.title}
-  jogos={section.data}
-  onToggleFavorito={alternarFavorito}
-/>
-
 export default function App() {
 
   const [jogos, setJogos] = useState([])
